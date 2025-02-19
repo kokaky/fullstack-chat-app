@@ -45,5 +45,18 @@ export const useAuthStore = create((set) => {
         toast.error(error.response.data.message);
       }
     },
+
+    login: async (data) => {
+      set({ isLoggingIng: true });
+      try {
+        const res = await axiosInstance.post("/auth/login", data);
+        set({ authUser: res.data });
+        toast.success("登陆成功");
+      } catch (error) {
+        toast.error(error.response.data.message);
+      } finally {
+        set({ isLoggingIng: false });
+      }
+    },
   };
 });
