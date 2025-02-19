@@ -58,5 +58,19 @@ export const useAuthStore = create((set) => {
         set({ isLoggingIng: false });
       }
     },
+
+    updateProfile: async (data) => {
+      set({ isUpdatingProfile: true });
+      try {
+        const res = await axiosInstance.put("/auth/update-profile", data);
+        set({ authUser: res.data });
+        toast.success("头像上传成功！");
+      } catch (error) {
+        console.log("错误发生在头像上传:", error);
+        toast.error(error.response.data.message);
+      } finally {
+        set({ isUpdatingProfile: false });
+      }
+    },
   };
 });
