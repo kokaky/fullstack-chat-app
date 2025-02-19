@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <Link
               to={"/settings"}
-              className={`btn-btn-sm gap-2 transition-colors flex items-center justify-center`}
+              className={`btn btn-sm gap-2 transition-colors flex items-center justify-center`}
             >
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">设置</span>
