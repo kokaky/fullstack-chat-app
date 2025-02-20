@@ -11,6 +11,8 @@ export const useAuthStore = create((set) => {
     isUpdatingProfile: false,
     isCheckingAuth: true, // 当刷新页面时，检查此用户是否经过身份验证
 
+    onlineUsers: [],
+
     checkAuth: async () => {
       try {
         const res = await axiosInstance.get("/auth/check");
