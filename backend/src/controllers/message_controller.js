@@ -1,6 +1,7 @@
 import User from "../models/user_model.js";
 import Message from "../models/message_model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const getUsersForSidebar = async (req, res) => {
   try {
@@ -60,7 +61,12 @@ export const sendMessage = async (req, res) => {
 
     await newMessage.save();
 
-    // TODO: 使用socket.io实现实时发送功能 稍后实现
+    // 使用socket.io实现实时发送功能 稍后实现
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      // 说明用户在线——只把这条消息发送给这一个用户
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(200).json(newMessage);
   } catch (error) {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 import { useChatStore } from "../store/useChatStore.js";
 import { useAuthStore } from "../store/useAuthStore.js";
@@ -9,10 +9,15 @@ const Sidebar = () => {
     useChatStore();
 
   const { onlineUsers } = useAuthStore();
+  const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
   useEffect(() => {
     getUsers();
   }, [getUsers]);
+
+  const filteredUsers = showOnlineOnly
+    ? users.filter((user) => onlineUsers.includes(user._id))
+    : users;
 
   if (isUserLoading) return <SidebarSkeleton />;
 
@@ -23,11 +28,26 @@ const Sidebar = () => {
           <Users className="size-6" />
           <span className="font-medium hidden lg:block">联系人</span>
         </div>
-        {/* TODO: 仅展示在线的联系人 */}
+
+        <div className="mt-3 flex lg-flex items-center gap-2">
+          <label className="cursor-pointer flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={showOnlineOnly}
+              onChange={(e) => setShowOnlineOnly(e.target.checked)}
+              className="checkbox checkbox-sm"
+            />
+            <span className="text-sm">仅展示在线联系人</span>
+          </label>
+
+          <span className="text-xs text-zinc-500">
+            ({onlineUsers.length - 1} 人在线)
+          </span>
+        </div>
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-        {users.map((user) => {
+        {filteredUsers.map((user) => {
           return (
             <button
               key={user._id}
@@ -61,6 +81,10 @@ const Sidebar = () => {
             </button>
           );
         })}
+
+        {filteredUsers.length === 0 && (
+          <div className="text-center text-zinc-500 py-4">没有在线用户</div>
+        )}
       </div>
     </aside>
   );
