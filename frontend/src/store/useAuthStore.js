@@ -11,7 +11,7 @@ export const useAuthStore = create((set, get) => {
   return {
     authUser: null,
     isSigningUp: false,
-    isLoggingIng: false,
+    isLoggingIn: false,
     isUpdatingProfile: false,
     isCheckingAuth: true, // 当刷新页面时，检查此用户是否经过身份验证
 
@@ -57,7 +57,7 @@ export const useAuthStore = create((set, get) => {
     },
 
     login: async (data) => {
-      set({ isLoggingIng: true });
+      set({ isLoggingIn: true });
       try {
         const res = await axiosInstance.post("/auth/login", data);
         set({ authUser: res.data });
@@ -68,7 +68,7 @@ export const useAuthStore = create((set, get) => {
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
-        set({ isLoggingIng: false });
+        set({ isLoggingIn: false });
       }
     },
 
