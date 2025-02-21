@@ -1,10 +1,17 @@
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
-import { X } from "lucide-react";
+import { X, Phone, Video } from "lucide-react";
+import { useLiveKitStore } from "../store/useLiveKitStore";
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
+  const { getCall } = useLiveKitStore();
+
+  const call = () => {
+    getCall();
+    return;
+  };
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -28,10 +35,20 @@ const ChatHeader = () => {
             </p>
           </div>
         </div>
-        {/* 关闭按钮 */}
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
+
+        <div className="flex gap-5">
+          {/* 视频和语音选项 */}
+          <button onClick={() => call()}>
+            <Phone />
+          </button>
+          <button>
+            <Video />
+          </button>
+          {/* 关闭按钮 */}
+          <button onClick={() => setSelectedUser(null)}>
+            <X />
+          </button>
+        </div>
       </div>
     </div>
   );

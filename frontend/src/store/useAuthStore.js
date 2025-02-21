@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-const BASE_URL = "http://localhost:5001";
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 // create中的对象则为初始状态
 export const useAuthStore = create((set, get) => {
