@@ -20,13 +20,11 @@ export const useLiveKitStore = create((set, get) => {
         const user = useAuthStore.getState().authUser;
 
         const roomRes = await axiosInstance.get(`/room/${user._id}`);
-        console.log("roomRes:", roomRes);
         if (roomRes.data.length > 0) {
           // 如果不为空，则说明有对应的roomId，则设置room为查找出来的roomId
           // 否则就用之前传来的room
           room = roomRes.data.roomId;
         }
-        console.log("room:", room);
 
         set({ roomId: room });
         const res = await axiosInstance.get(
@@ -47,8 +45,7 @@ export const useLiveKitStore = create((set, get) => {
 
     removeRoomId: async () => {
       try {
-        if (get().roomId)
-          await axiosInstance.removeRoomId(`/room/${get().roomId}`);
+        if (get().roomId) await axiosInstance.delete(`/room/${get().roomId}`);
         toast.success("通话结束");
       } catch (error) {
         console.log("错误发生在removeRoomId", error);
