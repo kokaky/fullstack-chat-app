@@ -20,7 +20,11 @@ const ChatContainer = () => {
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
-  const { callType, videoType, cancleCall, cancleVideo } = useLiveKitStore();
+  const { callType, setCallType, removeRoomId } = useLiveKitStore();
+  const handleDisconnect = () => {
+    setCallType("");
+    removeRoomId();
+  };
 
   useEffect(() => {
     getMessages(selectedUser._id);
@@ -28,8 +32,6 @@ const ChatContainer = () => {
     // 组件撤销时执行
     return () => {
       unsubscribeFromMessages();
-      if (callType) cancleCall();
-      if (videoType) cancleVideo();
     };
   }, [
     selectedUser._id,
@@ -58,7 +60,7 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {!callType && !videoType ? (
+        {!callType ? (
           messages.map((message) => {
             return (
               // 消息：头像+消息
@@ -105,7 +107,11 @@ const ChatContainer = () => {
             );
           })
         ) : (
-          <CallRoom />
+          <CallRoom
+            audio={callType === "audio" || callType === "video"}
+            video={callType === "video"}
+            handleDisconnect={handleDisconnect}
+          />
         )}
       </div>
 

@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   if (userId) userSocketMap[userId] = socket.id;
 
-  // 广播出去——io.emit()用来发送时间到所有的连接的客户端上
+  // 广播出去——io.emit()用来发送事件到所有的连接的客户端上
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {

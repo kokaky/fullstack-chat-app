@@ -6,12 +6,7 @@ import { useLiveKitStore } from "../store/useLiveKitStore";
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
-  const { getCall } = useLiveKitStore();
-
-  const call = () => {
-    getCall();
-    return;
-  };
+  const { setCallType } = useLiveKitStore();
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -38,10 +33,10 @@ const ChatHeader = () => {
 
         <div className="flex gap-5">
           {/* 视频和语音选项 */}
-          <button onClick={() => call()}>
+          <button onClick={() => setCallType("audio")}>
             <Phone />
           </button>
-          <button>
+          <button onClick={() => setCallType("video")}>
             <Video />
           </button>
           {/* 关闭按钮 */}
